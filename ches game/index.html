@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS Chess – Player or Bot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Chess Game</h1>
+    <div class="main-container">
+        <div class="controls-row">
+            <div id="game-status">White's turn</div>
+            <button id="undo-btn">Undo</button>
+            <button id="redo-btn">Redo</button>
+        </div>
+        <div class="options-row">
+            <label>
+                <input type="radio" name="mode" value="human" checked>
+                2 Players
+            </label>
+            <label>
+                <input type="radio" name="mode" value="bot">
+                Play vs Computer
+            </label>
+            <select id="bot-side">
+                <option value="b">Bot plays Black</option>
+                <option value="w">Bot plays White</option>
+            </select>
+            <button id="reset-btn">Reset Game</button>
+        </div>
+        <div id="chessboard-container">
+            <div id="chessboard"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Animated Chessboard Doubling</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+            background: linear-gradient(to right, #420451, #0431a3); /* Linear gradient from green to blue */
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(8, 80px);
+      grid-template-rows: repeat(8, 80px);
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      border: 5px solid #444;
+    }
+    .square {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size:15px; /* smaller so large numbers fit */
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      padding: 2px;
+      line-height: 1.1em;
+      word-break: break-word;  /* ensures text breaks within box */
+      white-space: pre-line;   /* keeps line breaks */
+      overflow: hidden;
+    }
+    .white { background: #eee; color: #111; }
+    .black { background: #333; }
+    .highlight {
+      background: gold !important;
+      color: #111 !important;
+      transition: background 0.5s, color 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="board" id="board"></div>
+
+  <script>
+    const board = document.getElementById("board");
+
+    // Function to format large numbers with line breaks every 9 chars
+    function wrapNumber(num) {
+      let str = num.toLocaleString();
+      let result = "";
+      let count = 0;
+      for (let i = 0; i < str.length; i++) {
+        result += str[i];
+        count++;
+        if (count >= 9 && i !== str.length - 1) {
+          result += "\n"; // insert line break
+          count = 0;
+        }
+      }
+      return result;
+    }
+
+    // Create 64 squares
+    for (let i = 0; i < 64; i++) {
+      let square = document.createElement("div");
+      square.className = "square " + ((Math.floor(i / 8) + i) % 2 === 0 ? "white" : "black");
+      square.innerText = ""; // initially empty
+      board.appendChild(square);
+    }
+
+    const squares = document.querySelectorAll(".square");
+
+    // Animate filling of numbers
+    async function animateChessboard() {
+      let value = 1;
+      squares[0].innerText = "1";
+      await new Promise(r => setTimeout(r, 700));
+
+      for (let i = 1; i < 64; i++) {
+        let prev = value;
+        value *= 2;
+
+        let sq = squares[i];
+        sq.classList.add("highlight");
+
+        // Step 1: show calculation
+        sq.innerText = `${prev.toLocaleString()} ❎ 2️⃣`;
+        await new Promise(r => setTimeout(r, 500));
+
+        // Step 2: show result with wrapping
+        sq.innerText = wrapNumber(value);
+        await new Promise(r => setTimeout(r, 500));
+
+        sq.classList.remove("highlight");
+      }
+    }
+
+    animateChessboard();
+  </script>
+</body>
+</html>
